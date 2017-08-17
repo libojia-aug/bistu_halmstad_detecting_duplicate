@@ -1,0 +1,107 @@
+<%- include header %>
+     <div class="container">
+
+      <div class="masthead">
+        <h3 class="text-muted">Detecting duplicates</h3>
+       
+      </div>
+
+<table id='yes' class="table">
+  <caption>Duplicate file  for  <%- JSON.stringify(image) %></caption>
+  <thead>
+    <tr>
+      <th>Group ID</th>>
+      <th>Path</th>
+      <th>Name</th>
+      <th>Size(Bytes)</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+
+<table id='no' class="table">
+  <caption>Non duplicate file</caption>
+  <thead>
+    <tr>
+      <th>File ID</th>>
+      <th>Path</th>
+      <th>Name</th>
+      <th>Size(Bytes)</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<button type="button" class="btn btn-primary" onclick="go()">go back</button>
+<button type="button" class="btn btn-primary" onclick="change()">fun</button>
+      <div class="footer">
+        <p>&copy; 卢玥、李浩瀚、孙仲翊、王子杰、李博嘉, Beijing Information Science and Technology University & Halmstad University 2017</p>
+      </div>
+
+    </div> <!-- /container -->
+<script type="text/javascript"> 
+var files=<%- JSON.stringify(files1) %>;
+console.log(files);
+var image=<%- JSON.stringify(image) %>;
+console.log(image);
+        // for (var i = 0; i < files1.length; i++) {
+        //   for (var j = i + 1; j < files1.length; j++) {
+        //     var temp=[];
+        //     if (files1[i][5] == files1[j][5]) {
+        //       temp.push(files1[i])
+        //     }
+        //   }
+        // }
+var filesO = new Object();
+for (var i = 0; i < files.length; i++) {
+  if(!filesO[files[i][5]]){
+    filesO[files[i][5]] = [];
+  }
+  filesO[files[i][5]].push(files[i]);
+}
+console.log(filesO);
+var noN = 1;
+var yesN = 1;
+for(var i in filesO){//用javascript的for/in循环遍历对象的属性
+  var len = filesO[i].length
+  if(len>1){
+    $("#yes").append("<tr><td rowspan="+ len+">"+yesN+"</td>"+"<td>"+filesO[i][0][0]+"</td>"+"<td>"+filesO[i][0][1]+"</td>"+"<td rowspan="+ len+">"+filesO[i][0][3]+"</td>"+"</tr>");
+    var rows = "";
+    console.log(len);
+    for(var j = 1; j<len ;j++){
+      rows += "<tr><td>"+filesO[i][j][0]+"</td>"+"<td>"+filesO[i][j][1]+"</td></tr>";
+    }
+    $("#yes").append(rows);
+    yesN++;
+  }else{
+
+    $("#no").append("<tr><td>"+noN+"</td>"+"<td>"+filesO[i][0][0]+"</td>"+"<td>"+filesO[i][0][1]+"</td>"+"<td>"+filesO[i][0][3]+"</td>"+"</tr>");
+    noN++;
+  }
+console.log(filesO[i]);
+} 
+function go(){
+  window.location.href='/hadimages';
+}
+function change(){
+  var css=document.getElementById('csschange'); 
+  console.log(css);
+  var href = document.getElementById('csschange').href
+  // console.log(css.length);
+  // console.log(JSON.parse(css));
+  // console.log(JSON.stringify(css));
+  
+  // console.log(css.toString());
+  // console.log(css[0]);
+  console.log(href);
+  if (href.indexOf('white')>-1) 
+  css.setAttribute('href','/css/bootstrap_dark.min.css'); 
+  if (href.indexOf('dark')>-1) 
+  css.setAttribute('href','/css/bootstrap_white.min.css');
+}
+</script> 
+
+</body>
+</html>
